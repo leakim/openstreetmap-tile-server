@@ -45,8 +45,9 @@ RUN apt-get install -y --no-install-recommends \
  liblua5.3-dev \
  pandoc
 RUN cd ~ \
-&& git clone -b master --single-branch https://github.com/openstreetmap/osm2pgsql.git --depth 1 \
+&& git clone -b master --single-branch https://github.com/openstreetmap/osm2pgsql.git --depth 100 \
 && cd osm2pgsql \
+&& git checkout 50a5d8a645449d467feefc5398e27dd1823ee767 \
 && mkdir build \
 && cd build \
 && cmake .. \
@@ -64,8 +65,9 @@ RUN apt-get install -y --no-install-recommends \
  libtool \
  libmapnik-dev
 RUN cd ~ \
-&& git clone -b switch2osm --single-branch https://github.com/SomeoneElseOSM/mod_tile.git --depth 1 \
+&& git clone -b switch2osm --single-branch https://github.com/SomeoneElseOSM/mod_tile.git --depth 100 \
 && cd mod_tile \
+&& git checkout dd3c843697cfef8100c05312237d1d63ee44ffde \
 && ./autogen.sh \
 && ./configure \
 && make -j $(nproc) \
@@ -78,8 +80,9 @@ FROM compiler-common AS compiler-stylesheet
 RUN apt-get install -y --no-install-recommends \
  npm
 RUN cd ~ \
-&& git clone --single-branch --branch v5.3.1 https://github.com/gravitystorm/openstreetmap-carto.git --depth 1 \
+&& git clone --single-branch --branch v5.3.1 https://github.com/gravitystorm/openstreetmap-carto.git --depth 100 \
 && cd openstreetmap-carto \
+&& git checkout 8f4204efa3515e53dd04eebd0d4cecca04afde07 \
 && sed -ie 's#https:\/\/naciscdn.org\/naturalearth\/110m\/cultural\/ne_110m_admin_0_boundary_lines_land.zip#https:\/\/naturalearth.s3.amazonaws.com\/110m_cultural\/ne_110m_admin_0_boundary_lines_land.zip#g' external-data.yml \
 && npm install -g carto@0.18.2 \
 && carto project.mml > mapnik.xml
